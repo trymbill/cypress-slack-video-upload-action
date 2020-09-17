@@ -1,11 +1,18 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Cypress Screenshot & Video Upload to Slack'
+branding:
+  icon: file
+  color: blue
+description: 'After running a Cypress test in a Github action, upload the screenshots and videos directly to Slack'
 inputs:
-  milliseconds: # change this
+  token:
+    description: 'Slack token'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  channels:
+    description: 'Slack channels'
+    required: true
+outputs:
+  result:
+    description: 'Result of video and screenshot uploads'
 runs:
   using: 'node12'
   main: 'dist/index.js'
