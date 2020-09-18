@@ -32,8 +32,7 @@ async function run(): Promise<void> {
 
     core.debug('Sending initial slack message')
     const result = await slack.chat.postMessage({
-      text:
-        "I've got test results coming in from Cypress. Hold tight! :mac_loading:",
+      text: "I've got test results coming in from Cypress. Hold tight ...",
       channel: channels
     })
 

@@ -773,7 +773,7 @@ function run() {
             core.debug(`Found ${videos.length} videos and ${screenshots.length} screenshots`);
             core.debug('Sending initial slack message');
             const result = yield slack.chat.postMessage({
-                text: "I've got test results coming in from Cypress. Hold tight! :mac_loading:",
+                text: "I've got test results coming in from Cypress. Hold tight ...",
                 channel: channels
             });
             // TODO: Check why Slack doesn't have the expected results from their API
