@@ -59,7 +59,7 @@ async function run(): Promise<void> {
         })
       )
 
-      core.debug('...done!!')
+      core.debug('...done!')
     }
 
     if (videos.length > 0) {
