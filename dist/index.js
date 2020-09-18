@@ -811,7 +811,7 @@ function run() {
             yield slack.chat.update({
                 ts: threadID,
                 channel: channelId,
-                text: "A Cypress test just finished. I've placed the screenshots and videos I this thread. Good pie!"
+                text: "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
             });
             core.setOutput('result', 'Bingo bango bongo!');
         }
