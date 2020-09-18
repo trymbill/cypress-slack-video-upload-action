@@ -49,7 +49,7 @@ jobs:
 ### Only upload when open PRs fail
 
 ```yml
-on: [pupull_requestsh]
+on: [pull_request]
 
 jobs:
   test-and-upload-results-on-fail:
