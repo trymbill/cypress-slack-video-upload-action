@@ -6,14 +6,17 @@ import { WebClient } from '@slack/web-api'
 async function run(): Promise<void> {
   try {
     core.debug('INIT!')
+    const start = +new Date();
     const token = core.getInput('token')
     const channels = core.getInput('channels')
+    const branch = core.getInput('branch')
 
     core.debug(`Token: ${token}`)
     core.debug(`Channels: ${channels}`)
+    core.debug(`Branch: ${branch}`)
 
     core.debug('Initializing slack SDK')
-    const slack = new WebClient(core.getInput('token'))
+    const slack = new WebClient(token)
     core.debug('Slack SDK initialized successfully')
 
     core.debug('Checking for videos and/or screenshots from cypress')
@@ -32,7 +35,7 @@ async function run(): Promise<void> {
 
     core.debug('Sending initial slack message')
     const result = await slack.chat.postMessage({
-      text: "I've got test results coming in from Cypress. Hold tight ...",
+      text: `E2E test failures on branch *${branch}*, hold tight...`,
       channel: channels
     })
 
@@ -80,11 +83,13 @@ async function run(): Promise<void> {
     }
 
     core.debug('Updating message to indicate a successful upload')
+
+    const finish = +new Date();
+    const totalTime = finish - start;
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text:
-        "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
+      text: `Web branch *${branch}* has test failures, suite completed in ${totalTime}ms.`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')
