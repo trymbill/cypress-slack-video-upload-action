@@ -6,7 +6,6 @@ import { WebClient } from '@slack/web-api'
 async function run(): Promise<void> {
   try {
     core.debug('INIT!')
-    const start = +new Date();
     const token = core.getInput('token')
     const channels = core.getInput('channels')
     const branch = core.getInput('branch')
@@ -84,12 +83,10 @@ async function run(): Promise<void> {
 
     core.debug('Updating message to indicate a successful upload')
 
-    const finish = +new Date();
-    const totalTime = finish - start;
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text: `Web branch *${branch}* has test failures, suite completed in ${totalTime}ms.`
+      text: `Web branch *${branch}* has test failures.`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')
