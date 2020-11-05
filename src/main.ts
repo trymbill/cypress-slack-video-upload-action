@@ -35,7 +35,7 @@ async function run(): Promise<void> {
 
     core.debug('Sending initial slack message')
     const result = await slack.chat.postMessage({
-      text: `E2E test failures on branch *${branch}*, hold tight...`,
+      text: `Web branch *${branch}* has test failures, hold tight...`,
       channel: channels
     })
 
