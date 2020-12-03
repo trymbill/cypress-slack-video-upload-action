@@ -778,7 +778,7 @@ function run() {
             core.debug(`Found ${videos.length} videos and ${screenshots.length} screenshots`);
             core.debug('Sending initial slack message');
             const result = yield slack.chat.postMessage({
-                text: `${actors_1.default[actor]} Web branch *${branch}* has test failures, hold tight...`,
+                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures, hold tight...`,
                 channel: channels
             });
             // TODO: Check why Slack doesn't have the expected results from their API
@@ -815,7 +815,7 @@ function run() {
             yield slack.chat.update({
                 ts: threadID,
                 channel: channelId,
-                text: `${actors_1.default[actor]} Web branch *${branch}* has test failures.`
+                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures.`
             });
             core.setOutput('result', 'Bingo bango bongo!');
         }
@@ -6436,20 +6436,20 @@ exports.getUserAgent = getUserAgent;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const actors = {
-    'aleksandar-ilic-lmp': '@Aleksandar Ilic',
-    'andrej-zentner-lmp': '@Andrej Zentner',
-    'billy-fortin-coda': '@Billy Fortin',
-    'bogdan-poplauschi-coda': '@Bogdan Poplauschi',
-    'colton-savage-lmp': '@Colton Savage',
-    'jeff-borders-coda': '@Jeff Borders',
-    'john-sylvain-coda': '@John Sylvain',
-    'meg-okeefe-coda': "@Meg O'Keefe",
-    'mihai-rustiuc-coda': '@Mihai Rustiuc',
-    'mike-beirne-coda': '@Mike Beirne',
-    'mike-piacenza-lmp': '@Mike Piacenza',
-    'vid-staric-lmp': '@vid staric',
-    'yao-zhang-coda': '@Yao Zhang',
-    'zach-glazer-coda': '@Zach Glazer'
+    'aleksandar-ilic-lmp': 'U01A7010YHW',
+    'andrej-zentner-lmp': 'U019E27DKCM',
+    'billy-fortin-coda': 'U015MLV41SL',
+    'bogdan-poplauschi-coda': 'U0183M9NMPU',
+    'colton-savage-lmp': 'U014WEHJUTX',
+    'jeff-borders-coda': 'U017GEJ0M0C',
+    'john-sylvain-coda': 'U0161MH110F',
+    'meg-okeefe-coda': 'U015Y01C5HC',
+    'mihai-rustiuc-coda': 'U01866TL2JV',
+    'mike-beirne-coda': 'U01B7URUW20',
+    'mike-piacenza-lmp': 'U010HEQUN6B',
+    'vid-staric-lmp': 'U019H4RGK26',
+    'yao-zhang-coda': 'U017ZPV3M44',
+    'zach-glazer-coda': 'U015Y017HTQ'
 };
 exports.default = actors;
 
