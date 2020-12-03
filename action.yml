@@ -13,6 +13,9 @@ inputs:
   branch:
     description: 'Branch name'
     required: true
+  actor:
+    description: 'Who ran the job'
+    required: true
 outputs:
   result:
     description: 'Result of video and screenshot uploads'

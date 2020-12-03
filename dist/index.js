@@ -751,6 +751,7 @@ const core = __importStar(__webpack_require__(186));
 const fs_1 = __webpack_require__(747);
 const walk_sync_1 = __importDefault(__webpack_require__(999));
 const web_api_1 = __webpack_require__(431);
+const actors_1 = __importDefault(__webpack_require__(769));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -758,9 +759,11 @@ function run() {
             const token = core.getInput('token');
             const channels = core.getInput('channels');
             const branch = core.getInput('branch');
+            const actor = core.getInput('actor');
             core.debug(`Token: ${token}`);
             core.debug(`Channels: ${channels}`);
             core.debug(`Branch: ${branch}`);
+            core.debug(`Actor: ${actor}`);
             core.debug('Initializing slack SDK');
             const slack = new web_api_1.WebClient(token);
             core.debug('Slack SDK initialized successfully');
@@ -775,7 +778,7 @@ function run() {
             core.debug(`Found ${videos.length} videos and ${screenshots.length} screenshots`);
             core.debug('Sending initial slack message');
             const result = yield slack.chat.postMessage({
-                text: `Web branch *${branch}* has test failures, hold tight...`,
+                text: `${actors_1.default[actor]} Web branch *${branch}* has test failures, hold tight...`,
                 channel: channels
             });
             // TODO: Check why Slack doesn't have the expected results from their API
@@ -812,7 +815,7 @@ function run() {
             yield slack.chat.update({
                 ts: threadID,
                 channel: channelId,
-                text: `Web branch *${branch}* has test failures.`
+                text: `${actors_1.default[actor]} Web branch *${branch}* has test failures.`
             });
             core.setOutput('result', 'Bingo bango bongo!');
         }
@@ -6423,6 +6426,33 @@ function getUserAgent() {
 }
 exports.getUserAgent = getUserAgent;
 //# sourceMappingURL=instrument.js.map
+
+/***/ }),
+
+/***/ 769:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const actors = {
+    'aleksandar-ilic-lmp': '@Aleksandar Ilic',
+    'andrej-zentner-lmp': '@Andrej Zentner',
+    'billy-fortin-coda': '@Billy Fortin',
+    'bogdan-poplauschi-coda': '@Bogdan Poplauschi',
+    'colton-savage-lmp': '@Colton Savage',
+    'jeff-borders-coda': '@Jeff Borders',
+    'john-sylvain-coda': '@John Sylvain',
+    'meg-okeefe-coda': "@Meg O'Keefe",
+    'mihai-rustiuc-coda': '@Mihai Rustiuc',
+    'mike-beirne-coda': '@Mike Beirne',
+    'mike-piacenza-lmp': '@Mike Piacenza',
+    'vid-staric-lmp': '@vid staric',
+    'yao-zhang-coda': '@Yao Zhang',
+    'zach-glazer-coda': '@Zach Glazer'
+};
+exports.default = actors;
+
 
 /***/ }),
 
