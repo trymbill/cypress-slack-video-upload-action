@@ -37,7 +37,7 @@ async function run(): Promise<void> {
 
     core.debug('Sending initial slack message')
     const result = await slack.chat.postMessage({
-      text: `${actorMap[actor]} Web branch *${branch}* has test failures, hold tight...`,
+      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures, hold tight...`,
       channel: channels
     })
 
@@ -89,7 +89,7 @@ async function run(): Promise<void> {
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text: `${actorMap[actor]} Web branch *${branch}* has test failures.`
+      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')
