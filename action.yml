@@ -16,6 +16,9 @@ inputs:
   actor:
     description: 'Who ran the job'
     required: true
+  runId:
+    description: 'Github action run ID'
+    required: true
 outputs:
   result:
     description: 'Result of video and screenshot uploads'

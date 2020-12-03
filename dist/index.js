@@ -760,6 +760,7 @@ function run() {
             const channels = core.getInput('channels');
             const branch = core.getInput('branch');
             const actor = core.getInput('actor');
+            const runId = core.getInput('runId');
             core.debug(`Token: ${token}`);
             core.debug(`Channels: ${channels}`);
             core.debug(`Branch: ${branch}`);
@@ -815,7 +816,7 @@ function run() {
             yield slack.chat.update({
                 ts: threadID,
                 channel: channelId,
-                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures.`
+                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web_e2e_tests/actions/runs/${runId}`
             });
             core.setOutput('result', 'Bingo bango bongo!');
         }

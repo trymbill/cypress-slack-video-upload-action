@@ -11,6 +11,7 @@ async function run(): Promise<void> {
     const channels = core.getInput('channels')
     const branch = core.getInput('branch')
     const actor = core.getInput('actor')
+    const runId = core.getInput('runId')
 
     core.debug(`Token: ${token}`)
     core.debug(`Channels: ${channels}`)
@@ -89,7 +90,7 @@ async function run(): Promise<void> {
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.`
+      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web_e2e_tests/actions/runs/${runId}`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')
