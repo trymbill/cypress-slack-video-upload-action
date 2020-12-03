@@ -10,6 +10,9 @@ inputs:
   channels:
     description: 'Slack channels'
     required: true
+  branch:
+    description: 'Branch name'
+    required: true
 outputs:
   result:
     description: 'Result of video and screenshot uploads'
