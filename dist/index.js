@@ -769,8 +769,8 @@ function run() {
             const slack = new web_api_1.WebClient(token);
             core.debug('Slack SDK initialized successfully');
             core.debug('Checking for videos and/or screenshots from cypress');
-            const videos = walk_sync_1.default('cypress', { globs: ['**/*.mp4'] });
-            const screenshots = walk_sync_1.default('cypress', { globs: ['**/*.png'] });
+            const videos = walk_sync_1.default('tests/e2e/videos', { globs: ['**/*.mp4'] });
+            const screenshots = walk_sync_1.default('tests/e2e/screenshots', { globs: ['**/*.png'] });
             if (videos.length <= 0 && screenshots.length <= 0) {
                 core.debug('No videos or screenshots found. Exiting!');
                 core.setOutput('result', 'No videos or screenshots found!');
@@ -792,7 +792,7 @@ function run() {
                     core.debug(`Uploading ${screenshot}`);
                     yield slack.files.upload({
                         filename: screenshot,
-                        file: fs_1.createReadStream(`cypress/${screenshot}`),
+                        file: fs_1.createReadStream(`tests/e2e/screenshots/${screenshot}`),
                         thread_ts: threadID,
                         channels: channelId
                     });
@@ -805,7 +805,7 @@ function run() {
                     core.debug(`Uploading ${video}`);
                     yield slack.files.upload({
                         filename: video,
-                        file: fs_1.createReadStream(`cypress/${video}`),
+                        file: fs_1.createReadStream(`tests/e2e/videos/${video}`),
                         thread_ts: threadID,
                         channels: channelId
                     });

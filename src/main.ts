@@ -23,8 +23,10 @@ async function run(): Promise<void> {
     core.debug('Slack SDK initialized successfully')
 
     core.debug('Checking for videos and/or screenshots from cypress')
-    const videos = walkSync('cypress', { globs: ['**/*.mp4'] })
-    const screenshots = walkSync('cypress', { globs: ['**/*.png'] })
+    const videos = walkSync('tests/e2e/videos', { globs: ['**/*.mp4'] })
+    const screenshots = walkSync('tests/e2e/screenshots', {
+      globs: ['**/*.png']
+    })
 
     if (videos.length <= 0 && screenshots.length <= 0) {
       core.debug('No videos or screenshots found. Exiting!')
@@ -56,7 +58,7 @@ async function run(): Promise<void> {
 
           await slack.files.upload({
             filename: screenshot,
-            file: createReadStream(`cypress/${screenshot}`),
+            file: createReadStream(`tests/e2e/screenshots/${screenshot}`),
             thread_ts: threadID,
             channels: channelId
           })
@@ -75,7 +77,7 @@ async function run(): Promise<void> {
 
           await slack.files.upload({
             filename: video,
-            file: createReadStream(`cypress/${video}`),
+            file: createReadStream(`tests/e2e/videos/${video}`),
             thread_ts: threadID,
             channels: channelId
           })
