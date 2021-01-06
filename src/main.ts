@@ -92,7 +92,7 @@ async function run(): Promise<void> {
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web_e2e_tests/actions/runs/${runId}`
+      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web/actions/runs/${runId}`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')

@@ -770,7 +770,9 @@ function run() {
             core.debug('Slack SDK initialized successfully');
             core.debug('Checking for videos and/or screenshots from cypress');
             const videos = walk_sync_1.default('tests/e2e/videos', { globs: ['**/*.mp4'] });
-            const screenshots = walk_sync_1.default('tests/e2e/screenshots', { globs: ['**/*.png'] });
+            const screenshots = walk_sync_1.default('tests/e2e/screenshots', {
+                globs: ['**/*.png']
+            });
             if (videos.length <= 0 && screenshots.length <= 0) {
                 core.debug('No videos or screenshots found. Exiting!');
                 core.setOutput('result', 'No videos or screenshots found!');
@@ -816,7 +818,7 @@ function run() {
             yield slack.chat.update({
                 ts: threadID,
                 channel: channelId,
-                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web_e2e_tests/actions/runs/${runId}`
+                text: `<@${actors_1.default[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web/actions/runs/${runId}`
             });
             core.setOutput('result', 'Bingo bango bongo!');
         }
