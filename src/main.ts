@@ -8,6 +8,7 @@ async function run(): Promise<void> {
     core.debug('INIT!')
     const token = core.getInput('token')
     const channels = core.getInput('channels')
+    const workdir = core.getInput('workdir') || 'cypress'
 
     core.debug(`Token: ${token}`)
     core.debug(`Channels: ${channels}`)
@@ -17,8 +18,8 @@ async function run(): Promise<void> {
     core.debug('Slack SDK initialized successfully')
 
     core.debug('Checking for videos and/or screenshots from cypress')
-    const videos = walkSync('cypress', { globs: ['**/*.mp4'] })
-    const screenshots = walkSync('cypress', { globs: ['**/*.png'] })
+    const videos = walkSync(workdir, { globs: ['**/*.mp4'] })
+    const screenshots = walkSync(workdir, { globs: ['**/*.png'] })
 
     if (videos.length <= 0 && screenshots.length <= 0) {
       core.debug('No videos or screenshots found. Exiting!')
@@ -50,7 +51,7 @@ async function run(): Promise<void> {
 
           await slack.files.upload({
             filename: screenshot,
-            file: createReadStream(`cypress/${screenshot}`),
+            file: createReadStream(`${workdir}/${screenshot}`),
             thread_ts: threadID,
             channels: channelId
           })
@@ -69,7 +70,7 @@ async function run(): Promise<void> {
 
           await slack.files.upload({
             filename: video,
-            file: createReadStream(`cypress/${video}`),
+            file: createReadStream(`${workdir}/${video}`),
             thread_ts: threadID,
             channels: channelId
           })
