@@ -9,6 +9,9 @@ async function run(): Promise<void> {
     const token = core.getInput('token')
     const channels = core.getInput('channels')
     const workdir = core.getInput('workdir') || 'cypress'
+    const messageText =
+      core.getInput('messageText') ||
+      "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
 
     core.debug(`Token: ${token}`)
     core.debug(`Channels: ${channels}`)
@@ -84,8 +87,7 @@ async function run(): Promise<void> {
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text:
-        "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
+      text: messageText
     })
 
     core.setOutput('result', 'Bingo bango bongo!')

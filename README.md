@@ -35,6 +35,12 @@ But if your project uses Cypress in a subfolder (like most monorepos), you'll ne
 (i.e. `e2e/cypress`).
 (Don't include a trailing slash on your path!)
 
+### `messageText`
+
+**Optional** Custom Slack message text
+
+Default `A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!`
+
 ## Examples
 
 ### Upload results after every push
