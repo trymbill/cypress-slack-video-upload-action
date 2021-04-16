@@ -37,9 +37,9 @@ But if your project uses Cypress in a subfolder (like most monorepos), you'll ne
 
 ### `messageText`
 
-**Optional** Custom Slack message text
+**Optional** Custom Slack message text.
 
-Default `A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!`
+Default: `A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!`
 
 ## Examples
 
