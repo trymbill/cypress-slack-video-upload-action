@@ -13,6 +13,9 @@ inputs:
   workdir:
     description: 'The path of the directory where Cypress stores its screenshots. Defaults to `./cypress`. No trailing slashes, please.'
     required: false
+  messageText:
+    description: 'Custom Slack message text'
+    required: false
 outputs:
   result:
     description: 'Result of video and screenshot uploads'
