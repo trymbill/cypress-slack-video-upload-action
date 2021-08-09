@@ -12,7 +12,8 @@ const actors = {
   'mike-piacenza-lmp': 'U010HEQUN6B',
   'vid-staric-lmp': 'U019H4RGK26',
   'yao-zhang-coda': 'U017ZPV3M44',
-  'zach-glazer-coda': 'U015Y017HTQ'
+  'zach-glazer-coda': 'U015Y017HTQ',
+  'kayleigh-traister-coda': 'U021E5FUSKD'
 }
 
 export default actors
