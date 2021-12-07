@@ -22,20 +22,19 @@ async function run(): Promise<void> {
     const slack = new WebClient(token)
     core.debug('Slack SDK initialized successfully')
 
-    core.debug('Checking for videos and/or screenshots from cypress')
-    const videos = walkSync('tests/e2e/videos', { globs: ['**/*.mp4'] })
+    core.debug('Checking for screenshots from cypress')
     const screenshots = walkSync('tests/e2e/screenshots', {
       globs: ['**/*.png']
     })
 
-    if (videos.length <= 0 && screenshots.length <= 0) {
-      core.debug('No videos or screenshots found. Exiting!')
-      core.setOutput('result', 'No videos or screenshots found!')
+    if (screenshots.length <= 0) {
+      core.debug('No screenshots found. Exiting!')
+      core.setOutput('result', 'No screenshots found!')
       return
     }
 
     core.debug(
-      `Found ${videos.length} videos and ${screenshots.length} screenshots`
+      `Found ${screenshots.length} screenshots`
     )
 
     core.debug('Sending initial slack message')
@@ -68,31 +67,13 @@ async function run(): Promise<void> {
       core.debug('...done!')
     }
 
-    if (videos.length > 0) {
-      core.debug('Uploading videos...')
-
-      await Promise.all(
-        videos.map(async video => {
-          core.debug(`Uploading ${video}`)
-
-          await slack.files.upload({
-            filename: video,
-            file: createReadStream(`tests/e2e/videos/${video}`),
-            thread_ts: threadID,
-            channels: channelId
-          })
-        })
-      )
-
-      core.debug('...done!')
-    }
 
     core.debug('Updating message to indicate a successful upload')
 
     await slack.chat.update({
       ts: threadID,
       channel: channelId,
-      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.\nScreenshots/videos attached in thread, link to test run: https://github.com/CodaCollection/web/actions/runs/${runId}`
+      text: `<@${actorMap[actor]}> Web branch *${branch}* has test failures.\nScreenshots attached in thread, link to test run: https://github.com/CodaCollection/web/actions/runs/${runId}`
     })
 
     core.setOutput('result', 'Bingo bango bongo!')
