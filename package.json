@@ -26,7 +26,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.8.1",
     "@slack/web-api": "^6.1.0",
     "walk-sync": "^2.2.0"
   },
