@@ -55,7 +55,7 @@ jobs:
         uses: ./
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          channel: ${{ secrets.SLACK_CHANNEL || 'general' }}
+          channel: ${{ env.SLACK_CHANNEL }}
           screenshotsDir: cypress/screenshots
           videosDir: cypress/videos
           message-text: 'Cypress test results from CI - screenshots and videos attached'
