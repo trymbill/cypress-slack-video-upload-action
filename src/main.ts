@@ -81,7 +81,7 @@ async function run(): Promise<void> {
         })
       )
 
-      core.debug('...done!')
+      core.debug('...done!!')
     }
 
     core.debug('Updating message to indicate a successful upload')
@@ -93,7 +93,7 @@ async function run(): Promise<void> {
 
     core.setOutput('result', 'Bingo bango bongo!')
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error instanceof Error ? error.message : String(error))
   }
 }
 
