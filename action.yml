@@ -10,8 +10,11 @@ inputs:
   channel:
     description: 'Slack channel'
     required: true
-  workdir:
-    description: 'The path of the directory where Cypress stores its screenshots. Defaults to `./cypress`. No trailing slashes, please.'
+  screenshotsDir:
+    description: 'The path of the directory where Cypress stores its screenshots. Defaults to `cypress/screenshots`. No trailing slashes, please.'
+    required: false
+  videosDir:
+    description: 'The path of the directory where Cypress stores its videos. Defaults to `cypress/videos`. No trailing slashes, please.'
     required: false
   message-text:
     description: 'Custom Slack message text'
