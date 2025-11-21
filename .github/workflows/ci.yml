@@ -35,8 +35,9 @@ jobs:
         id: npm-lint-check
         run: npm run lint:check
 
-      - name: Bundle
-        run: npm run bundle
+      - name: Package
+        id: npm-package
+        run: npm run package
 
       - name: Run passing Cypress test
         run: npx cypress run --spec cypress/e2e/passing.cy.js
