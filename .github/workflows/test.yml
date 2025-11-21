@@ -21,6 +21,12 @@ jobs:
         run: npm ci
 
       - name: Build action
+        run: npm run build
+
+      - name: Lint action
+        run: npm run lint
+
+      - name: Package action
         run: npm run package
 
       - name: Run passing Cypress test
@@ -32,6 +38,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload screenshots and videos to Slack
+        if: github.actor == github.repository_owner
         uses: ./
         with:
           token: ${{ secrets.SLACK_TOKEN }}

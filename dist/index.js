@@ -61,15 +61,14 @@ function run() {
         try {
             core.debug('INIT!');
             const token = core.getInput('token');
-            const channels = core.getInput('channels');
+            const channel = core.getInput('channel');
             const workdir = core.getInput('workdir') || 'cypress';
             const messageText = core.getInput('message-text') ||
                 "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!";
-            core.debug(`Token: ${token}`);
-            core.debug(`Channels: ${channels}`);
+            core.debug(`Channel: ${channel}`);
             core.debug(`Message text: ${messageText}`);
             core.debug('Initializing slack SDK');
-            const slack = new web_api_1.WebClient(core.getInput('token'));
+            const slack = new web_api_1.WebClient(token);
             core.debug('Slack SDK initialized successfully');
             core.debug('Checking for videos and/or screenshots from cypress');
             const videos = (0, walk_sync_1.default)(workdir, { globs: ['**/*.mp4'] });
@@ -83,17 +82,20 @@ function run() {
             core.debug('Sending initial slack message');
             const result = yield slack.chat.postMessage({
                 text: "I've got test results coming in from Cypress. Hold tight ...",
-                channel: channels
+                channel
             });
-            // TODO: Check why Slack doesn't have the expected results from their API
-            //       calls defined as the return type. Maybe a generic is needed?
             const threadID = result.ts;
             const channelId = result.channel;
+            if (!threadID || !channelId) {
+                core.error('No thread ID or channel ID returned from Slack. Exiting!');
+                core.setFailed('No thread ID or channel ID returned from Slack!');
+                return;
+            }
             if (screenshots.length > 0) {
                 core.debug('Uploading screenshots...');
                 yield Promise.all(screenshots.map((screenshot) => __awaiter(this, void 0, void 0, function* () {
                     core.debug(`Uploading ${screenshot}`);
-                    yield slack.files.upload({
+                    yield slack.files.uploadV2({
                         filename: screenshot,
                         file: (0, fs_1.createReadStream)(`${workdir}/${screenshot}`),
                         thread_ts: threadID,
@@ -106,7 +108,7 @@ function run() {
                 core.debug('Uploading videos...');
                 yield Promise.all(videos.map((video) => __awaiter(this, void 0, void 0, function* () {
                     core.debug(`Uploading ${video}`);
-                    yield slack.files.upload({
+                    yield slack.files.uploadV2({
                         filename: video,
                         file: (0, fs_1.createReadStream)(`${workdir}/${video}`),
                         thread_ts: threadID,
