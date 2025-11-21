@@ -82,7 +82,7 @@ jobs:
         uses: cypress-io/github-action@v2
 
       - name: 'Upload screenshots and videos to Slack'
-        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        uses: trymbill/cypress-slack-video-upload-action@v2.0.0
         if: failure()
         with:
           token: ${{ secrets.SLACK_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
         uses: cypress-io/github-action@v2
 
       - name: 'Upload screenshots and videos to Slack'
-        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        uses: trymbill/cypress-slack-video-upload-action@v2.0.0
         with:
           token: ${{ secrets.SLACK_TOKEN }}
           channel: ${{ env.SLACK_CHANNEL }}
@@ -134,7 +134,7 @@ jobs:
         uses: cypress-io/github-action@v2
 
       - name: 'Upload only screenshots to Slack'
-        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        uses: trymbill/cypress-slack-video-upload-action@v2.0.0
         if: failure()
         with:
           token: ${{ secrets.SLACK_TOKEN }}
