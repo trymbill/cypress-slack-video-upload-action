@@ -37,7 +37,14 @@ export default [
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
         cy: 'readonly',
-        Cypress: 'readonly'
+        Cypress: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        before: 'readonly',
+        after: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly'
       },
 
       parser: tsParser,
