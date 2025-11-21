@@ -10,24 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        id: checkout
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        id: setup-node
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version-file: .node-version
+          cache: npm
 
-      - name: Install dependencies
+      - name: Install Dependencies
+        id: npm-ci
         run: npm ci
 
-      - name: Build action
-        run: npm run build
+      - name: Check Format
+        id: npm-format-check
+        run: npm run format:check
 
-      - name: Lint action
-        run: npm run lint
+      - name: Check Lint
+        id: npm-lint-check
+        run: npm run lint:check
 
-      - name: Package action
-        run: npm run package
+      - name: Bundle
+        run: npm run bundle
 
       - name: Run passing Cypress test
         run: npx cypress run --spec cypress/e2e/passing.cy.js

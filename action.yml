@@ -20,5 +20,5 @@ outputs:
   result:
     description: 'Result of video and screenshot uploads'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'node20'
+  main: 'dist/main.js'

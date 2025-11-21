@@ -60,7 +60,7 @@ async function run(): Promise<void> {
             filename: screenshot,
             file: createReadStream(`${workdir}/${screenshot}`),
             thread_ts: threadID,
-            channels: channelId
+            channel_id: channelId
           })
         })
       )
@@ -79,7 +79,7 @@ async function run(): Promise<void> {
             filename: video,
             file: createReadStream(`${workdir}/${video}`),
             thread_ts: threadID,
-            channels: channelId
+            channel_id: channelId
           })
         })
       )

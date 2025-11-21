@@ -93,11 +93,13 @@ This repository includes a test setup to verify the action works correctly.
 ### Running Tests Locally
 
 1. Build, lint and package the action:
+
    ```bash
    npm run all
    ```
 
 2. Run Cypress tests:
+
    ```bash
    # Run all tests
    npm run cypress:run
@@ -111,13 +113,14 @@ This repository includes a test setup to verify the action works correctly.
    ```
 
 3. Test the Slack upload action locally:
+
    ```bash
    # After running a failing test, you can test the action manually
    # @actions/core reads from INPUT_* environment variables when running locally
-   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel node dist/index.js
-   
+   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel node dist/main.js
+
    # Optional: specify workdir and custom message
-   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel INPUT_WORKDIR=cypress INPUT_MESSAGE_TEXT="Test message" node dist/index.js
+   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel INPUT_WORKDIR=cypress INPUT_MESSAGE_TEXT="Test message" node dist/main.js
    ```
 
 ### CI Testing
@@ -136,6 +139,7 @@ For the CI workflow to work, you need to set up the following secrets in your re
 - `SLACK_CHANNEL`: The Slack channel name to send test results to (optional, defaults to 'general')
 
 To set up secrets:
+
 1. Go to your repository Settings
 2. Navigate to `Secrets and variables -> Actions`
 3. Click `New repository secret`
@@ -143,6 +147,7 @@ To set up secrets:
 5. Optionally add `SLACK_CHANNEL` with your desired channel name
 
 The workflow will automatically run on pull requests and verify that:
+
 - Passing tests complete successfully
 - Failing tests generate screenshots and videos
 - The Slack upload action successfully uploads artifacts without errors
