@@ -53,31 +53,6 @@ Default: `A Cypress test just finished. I've placed the screenshots and videos i
 
 ## Examples
 
-### Upload results after every push
-
-```yml
-on: [push]
-
-env:
-  SLACK_CHANNEL: 'general'
-
-jobs:
-  test-and-upload-results:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: 'Run tests'
-        uses: cypress-io/github-action@v2
-
-      - name: 'Upload screenshots and videos to Slack'
-        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
-        with:
-          token: ${{ secrets.SLACK_TOKEN }}
-          channel: ${{ env.SLACK_CHANNEL }}
-```
-
 ### Only upload when open PRs fail
 
 ```yml
@@ -103,6 +78,31 @@ jobs:
           token: ${{ secrets.SLACK_TOKEN }}
           channel: ${{ env.SLACK_CHANNEL }}
           message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
+```
+
+### Upload results after every push
+
+```yml
+on: [push]
+
+env:
+  SLACK_CHANNEL: 'general'
+
+jobs:
+  test-and-upload-results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: 'Run tests'
+        uses: cypress-io/github-action@v2
+
+      - name: 'Upload screenshots and videos to Slack'
+        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        with:
+          token: ${{ secrets.SLACK_TOKEN }}
+          channel: ${{ env.SLACK_CHANNEL }}
 ```
 
 ## Testing
