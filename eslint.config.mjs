@@ -4,7 +4,6 @@ import js from '@eslint/js'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import _import from 'eslint-plugin-import'
-import prettier from 'eslint-plugin-prettier'
 import globals from 'globals'
 
 const compat = new FlatCompat({
@@ -20,13 +19,11 @@ export default [
   ...compat.extends(
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:@typescript-eslint/recommended'
   ),
   {
     plugins: {
       import: fixupPluginRules(_import),
-      prettier,
       '@typescript-eslint': typescriptEslint
     },
 
@@ -84,8 +81,7 @@ export default [
       'import/no-namespace': 'off',
       'no-console': 'off',
       'no-shadow': 'off',
-      'no-unused-vars': 'off',
-      'prettier/prettier': 'error'
+      'no-unused-vars': 'off'
     }
   },
   {
