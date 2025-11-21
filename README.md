@@ -59,7 +59,7 @@ jobs:
         uses: trymbill/cypress-slack-video-upload-action@v1.3.0
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          channels: 'engineering-ops'
+          channel: 'engineering-ops'
 ```
 
 ### Only upload when open PRs fail
@@ -82,6 +82,77 @@ jobs:
         if: failure()
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          channels: 'engineering-ops'
+          channel: 'engineering-ops'
           message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
 ```
+
+## Testing
+
+This repository includes a test setup to verify the action works correctly.
+
+### Running Tests Locally
+
+1. Build, lint and package the action:
+   ```bash
+   npm run all
+   ```
+
+2. Run Cypress tests:
+   ```bash
+   # Run all tests
+   npm run cypress:run
+
+   # Run specific test
+   npx cypress run --spec cypress/e2e/passing.cy.js
+   npx cypress run --spec cypress/e2e/failing.cy.js
+
+   # Open Cypress UI (for interactive testing)
+   npm run cypress:open
+   ```
+
+3. Test the Slack upload action locally:
+   ```bash
+   # After running a failing test, you can test the action manually
+   # @actions/core reads from INPUT_* environment variables when running locally
+   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel node dist/index.js
+   
+   # Optional: specify workdir and custom message
+   INPUT_TOKEN=your_token INPUT_CHANNEL=your_channel INPUT_WORKDIR=cypress INPUT_MESSAGE_TEXT="Test message" node dist/index.js
+   ```
+
+### CI Testing
+
+The repository includes a GitHub Actions workflow (`.github/workflows/test.yml`) that:
+
+- Runs on pull requests
+- Executes both passing and failing Cypress tests
+- Verifies the Slack upload action completes successfully
+
+**Required Secrets:**
+
+For the CI workflow to work, you need to set up the following secrets in your repository:
+
+- `SLACK_TOKEN`: Your Slack bot token (required)
+- `SLACK_CHANNEL`: The Slack channel name to send test results to (optional, defaults to 'general')
+
+To set up secrets:
+1. Go to your repository Settings
+2. Navigate to `Secrets and variables -> Actions`
+3. Click `New repository secret`
+4. Add `SLACK_TOKEN` with your bot token
+5. Optionally add `SLACK_CHANNEL` with your desired channel name
+
+The workflow will automatically run on pull requests and verify that:
+- Passing tests complete successfully
+- Failing tests generate screenshots and videos
+- The Slack upload action successfully uploads artifacts without errors
+
+## Releasing
+
+### Publishing new release
+
+`npm run all`
+`git add --all`
+`git commit -m "bump version"`
+`git tag -a -m "My first action release" v1.2`
+`git push --follow-tags`

@@ -13,12 +13,11 @@ async function run(): Promise<void> {
       core.getInput('message-text') ||
       "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
 
-    core.debug(`Token: ${token}`)
     core.debug(`Channel: ${channel}`)
     core.debug(`Message text: ${messageText}`)
 
     core.debug('Initializing slack SDK')
-    const slack = new WebClient(core.getInput('token'))
+    const slack = new WebClient(token)
     core.debug('Slack SDK initialized successfully')
 
     core.debug('Checking for videos and/or screenshots from cypress')

@@ -1,17 +1,40 @@
-name: 'build-test'
+name: Test Cypress and Slack Upload Action
+
 on:
   pull_request:
-  push:
     branches:
-      - main
-      - 'releases/*'
+      - '*'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run package
+
+      - name: Run passing Cypress test
+        run: npx cypress run --spec cypress/e2e/passing.cy.js
+        continue-on-error: false
+
+      - name: Run failing Cypress test
+        run: npx cypress run --spec cypress/e2e/failing.cy.js
+        continue-on-error: true
+
+      - name: Upload screenshots and videos to Slack
+        uses: ./
+        with:
+          token: ${{ secrets.SLACK_TOKEN }}
+          channel: ${{ secrets.SLACK_CHANNEL || 'general' }}
+          workdir: cypress
+          message-text: 'Cypress test results from CI - screenshots and videos attached'

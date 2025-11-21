@@ -7,8 +7,8 @@ inputs:
   token:
     description: 'Slack token'
     required: true
-  channels:
-    description: 'Slack channels'
+  channel:
+    description: 'Slack channel'
     required: true
   workdir:
     description: 'The path of the directory where Cypress stores its screenshots. Defaults to `./cypress`. No trailing slashes, please.'
