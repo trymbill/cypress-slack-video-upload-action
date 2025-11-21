@@ -1,9 +1,12 @@
-name: Test Cypress and Slack Upload Action
+name: Continuous Integration
 
 on:
   pull_request:
     branches:
-      - '*'
+      - main
+  push:
+    branches:
+      - main
 
 jobs:
   test:
