@@ -19,6 +19,7 @@ set -e
 # 3. Prompt the user for a new release tag
 # 4. Validate the new release tag
 # 5. Remind user to update the version field in package.json
+# 5.1. Update README.md examples with the new version
 # 6. Tag a new release
 # 7. Set 'is_major_release' variable
 # 8. Point separate major release tag (e.g. v1, v2) to the new release
@@ -75,6 +76,33 @@ if [[ ! ($YN == "y" || $YN == "Y") ]]; then
 	# Package.json version field is not up to date
 	echo -e "Please update the package.json version to ${BOLD_PURPLE}$new_tag${OFF} and commit your changes"
 	exit 1
+fi
+
+# 5.1. Update README.md with the new version
+readme_file="README.md"
+if [ -f "$readme_file" ]; then
+	# Find the current version in README.md (look for the pattern @vX.X.X)
+	current_readme_version=$(grep -oE '@v[0-9]+\.[0-9]+\.[0-9]+' "$readme_file" 2>/dev/null | head -n 1 | sed 's/@//' || true)
+	
+	if [ -n "$current_readme_version" ]; then
+		# Replace all instances of the old version with the new version
+		sed -i.bak "s/@${current_readme_version}/@${new_tag}/g" "$readme_file"
+		rm -f "${readme_file}.bak"
+		echo -e "Updated README.md: ${BOLD_BLUE}@${current_readme_version}${OFF} -> ${BOLD_GREEN}@${new_tag}${OFF}"
+		
+		# Commit the README change if there are changes to commit
+		if git diff --quiet "$readme_file"; then
+			echo -e "No changes detected in README.md (version may already be ${BOLD_BLUE}@${new_tag}${OFF})"
+		else
+			git add "$readme_file"
+			git commit -m "Update README.md examples to use ${new_tag}"
+			echo -e "Committed README.md changes"
+		fi
+	else
+		echo -e "${BOLD_RED}Warning:${OFF} Could not find version pattern in README.md, skipping update"
+	fi
+else
+	echo -e "${BOLD_RED}Warning:${OFF} README.md not found, skipping update"
 fi
 
 # 6. Tag a new release
