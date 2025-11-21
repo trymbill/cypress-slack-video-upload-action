@@ -1,5 +1,8 @@
 name: Continuous Integration
 
+env:
+  SLACK_CHANNEL: cypress-slack-github-action-test-channel
+
 on:
   pull_request:
     branches:
