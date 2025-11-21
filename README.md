@@ -51,6 +51,16 @@ But if your project uses Cypress in a subfolder (like most monorepos), you'll ne
 
 Default: `A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!`
 
+### `uploadType`
+
+**Optional** What to upload: `"both"`, `"screenshots"`, or `"videos"`.
+
+Default: `both`
+
+- `both` - Upload both screenshots and videos (default behavior)
+- `screenshots` - Upload only screenshots
+- `videos` - Upload only videos
+
 ## Examples
 
 ### Only upload when open PRs fail
@@ -103,6 +113,33 @@ jobs:
         with:
           token: ${{ secrets.SLACK_TOKEN }}
           channel: ${{ env.SLACK_CHANNEL }}
+```
+
+### Upload only screenshots or videos
+
+```yml
+on: [pull_request]
+
+env:
+  SLACK_CHANNEL: 'general'
+
+jobs:
+  test-and-upload-screenshots-only:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: 'Run tests'
+        uses: cypress-io/github-action@v2
+
+      - name: 'Upload only screenshots to Slack'
+        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        if: failure()
+        with:
+          token: ${{ secrets.SLACK_TOKEN }}
+          channel: ${{ env.SLACK_CHANNEL }}
+          uploadType: 'screenshots' # Options: 'both', 'screenshots', or 'videos'
 ```
 
 ## Testing

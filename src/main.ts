@@ -14,17 +14,25 @@ async function run(): Promise<void> {
     const messageText =
       core.getInput('message-text') ||
       "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!"
+    const uploadType = core.getInput('uploadType') || 'both'
 
     core.debug(`Channel: ${channel}`)
     core.debug(`Message text: ${messageText}`)
+    core.debug(`Upload type: ${uploadType}`)
 
     core.debug('Initializing slack SDK')
     const slack = new WebClient(token)
     core.debug('Slack SDK initialized successfully')
 
     core.debug('Checking for videos and/or screenshots from cypress')
-    const videos = walkSync(videosDir, { globs: ['**/*.mp4'] })
-    const screenshots = walkSync(screenshotsDir, { globs: ['**/*.png'] })
+    const videos =
+      uploadType === 'both' || uploadType === 'videos'
+        ? walkSync(videosDir, { globs: ['**/*.mp4'] })
+        : []
+    const screenshots =
+      uploadType === 'both' || uploadType === 'screenshots'
+        ? walkSync(screenshotsDir, { globs: ['**/*.png'] })
+        : []
 
     if (videos.length <= 0 && screenshots.length <= 0) {
       core.debug('No videos or screenshots found. Exiting!')
@@ -51,7 +59,10 @@ async function run(): Promise<void> {
       return
     }
 
-    if (screenshots.length > 0) {
+    if (
+      screenshots.length > 0 &&
+      (uploadType === 'both' || uploadType === 'screenshots')
+    ) {
       core.debug('Uploading screenshots...')
 
       await Promise.all(
@@ -70,7 +81,10 @@ async function run(): Promise<void> {
       core.debug('...done!')
     }
 
-    if (videos.length > 0) {
+    if (
+      videos.length > 0 &&
+      (uploadType === 'both' || uploadType === 'videos')
+    ) {
       core.debug('Uploading videos...')
 
       await Promise.all(

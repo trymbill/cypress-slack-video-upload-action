@@ -19,6 +19,10 @@ inputs:
   message-text:
     description: 'Custom Slack message text'
     required: false
+  uploadType:
+    description: 'What to upload: "both" (default), "screenshots", or "videos"'
+    required: false
+    default: 'both'
 outputs:
   result:
     description: 'Result of video and screenshot uploads'
