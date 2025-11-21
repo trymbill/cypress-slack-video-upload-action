@@ -1,6 +1,6 @@
 {
   "name": "cypress-slack-video-upload-action",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "description": "Github action that takes the generated screenshots and videos from a Cypress test and uploads them to Slack",
   "exports": {
