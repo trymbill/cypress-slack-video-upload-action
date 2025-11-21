@@ -1,4 +1,5 @@
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.run = run;
 const tslib_1 = require("tslib");
 const core = tslib_1.__importStar(require("@actions/core"));
 const fs_1 = require("fs");
@@ -9,17 +10,24 @@ async function run() {
         core.debug('INIT!');
         const token = core.getInput('token');
         const channel = core.getInput('channel');
-        const workdir = core.getInput('workdir') || 'cypress';
+        const screenshotsDir = core.getInput('screenshotsDir') || 'cypress/screenshots';
+        const videosDir = core.getInput('videosDir') || 'cypress/videos';
         const messageText = core.getInput('message-text') ||
             "A Cypress test just finished. I've placed the screenshots and videos in this thread. Good pie!";
+        const uploadType = core.getInput('uploadType') || 'both';
         core.debug(`Channel: ${channel}`);
         core.debug(`Message text: ${messageText}`);
+        core.debug(`Upload type: ${uploadType}`);
         core.debug('Initializing slack SDK');
         const slack = new web_api_1.WebClient(token);
         core.debug('Slack SDK initialized successfully');
         core.debug('Checking for videos and/or screenshots from cypress');
-        const videos = (0, walk_sync_1.default)(workdir, { globs: ['**/*.mp4'] });
-        const screenshots = (0, walk_sync_1.default)(workdir, { globs: ['**/*.png'] });
+        const videos = uploadType === 'both' || uploadType === 'videos'
+            ? (0, walk_sync_1.default)(videosDir, { globs: ['**/*.mp4'] })
+            : [];
+        const screenshots = uploadType === 'both' || uploadType === 'screenshots'
+            ? (0, walk_sync_1.default)(screenshotsDir, { globs: ['**/*.png'] })
+            : [];
         if (videos.length <= 0 && screenshots.length <= 0) {
             core.debug('No videos or screenshots found. Exiting!');
             core.setOutput('result', 'No videos or screenshots found!');
@@ -38,26 +46,28 @@ async function run() {
             core.setFailed('No thread ID or channel ID returned from Slack!');
             return;
         }
-        if (screenshots.length > 0) {
+        if (screenshots.length > 0 &&
+            (uploadType === 'both' || uploadType === 'screenshots')) {
             core.debug('Uploading screenshots...');
             await Promise.all(screenshots.map(async (screenshot) => {
                 core.debug(`Uploading ${screenshot}`);
                 await slack.files.uploadV2({
                     filename: screenshot,
-                    file: (0, fs_1.createReadStream)(`${workdir}/${screenshot}`),
+                    file: (0, fs_1.createReadStream)(`${screenshotsDir}/${screenshot}`),
                     thread_ts: threadID,
                     channel_id: channelId
                 });
             }));
             core.debug('...done!');
         }
-        if (videos.length > 0) {
+        if (videos.length > 0 &&
+            (uploadType === 'both' || uploadType === 'videos')) {
             core.debug('Uploading videos...');
             await Promise.all(videos.map(async (video) => {
                 core.debug(`Uploading ${video}`);
                 await slack.files.uploadV2({
                     filename: video,
-                    file: (0, fs_1.createReadStream)(`${workdir}/${video}`),
+                    file: (0, fs_1.createReadStream)(`${videosDir}/${video}`),
                     thread_ts: threadID,
                     channel_id: channelId
                 });
