@@ -45,6 +45,9 @@ Default: `A Cypress test just finished. I've placed the screenshots and videos i
 ```yml
 on: [push]
 
+env:
+  SLACK_CHANNEL: 'general'
+
 jobs:
   test-and-upload-results:
     runs-on: ubuntu-latest
@@ -59,13 +62,16 @@ jobs:
         uses: trymbill/cypress-slack-video-upload-action@v1.3.0
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          channel: 'engineering-ops'
+          channel: ${{ env.SLACK_CHANNEL }}
 ```
 
 ### Only upload when open PRs fail
 
 ```yml
 on: [pull_request]
+
+env:
+  SLACK_CHANNEL: 'general'
 
 jobs:
   test-and-upload-results-on-fail:
@@ -82,7 +88,7 @@ jobs:
         if: failure()
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          channel: 'engineering-ops'
+          channel: ${{ env.SLACK_CHANNEL }}
           message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
 ```
 
