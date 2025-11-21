@@ -12,34 +12,64 @@ on:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        id: checkout
         uses: actions/checkout@v5
 
       - name: Setup Node.js
-        id: setup-node
         uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
           cache: npm
 
       - name: Install Dependencies
-        id: npm-ci
         run: npm ci
 
       - name: Check Format
-        id: npm-format-check
         run: npm run format:check
 
       - name: Check Lint
-        id: npm-lint-check
         run: npm run lint:check
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Package
-        id: npm-package
+        run: npm run package
+
+      - name: Run Vitest
+        run: npm run test
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Package
         run: npm run package
 
       - name: Run passing Cypress test
