@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 import walkSync from 'walk-sync'
 import { WebClient } from '@slack/web-api'
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     core.debug('INIT!')
     const token = core.getInput('token')
