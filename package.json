@@ -56,7 +56,7 @@
     "js-yaml": "^4.1.1",
     "rollup": "^4.53.3",
     "prettier": "3.6.2",
-    "vitest": "^4.0.12",
+    "vitest": "^4.0.14",
     "typescript": "^5.9.3"
   }
 }
